@@ -1,0 +1,22 @@
+#logo_bootstrap{
+	margin-top: -14px;
+}
+.jumbotron{
+	position: fixed-bottom;
+	background-image: url(http://localhost:3000/images/background.jpg);
+	background-repeat: no-repeat;
+	background-position: center;
+	margin-top: 50px;
+}
+#jumbotronh1, #jumbotronp{
+	color: #ddd;
+}
+#t17_content{
+    margin: 20px;
+    text-indent: 30px;
+}
+.t16_btn{
+    float: right;
+    width: 150px;
+    background-color: #56317d;
+}
