@@ -1,9 +1,0 @@
-{
-  "kind": "youtube#videoListResponse",
-  "etag": "\"mPrpS7Nrk6Ggi_P7VJ8-KsEOiIw/KeOik9Ri5nMPZgjDLHtO3tGN6Pc\"",
-  "pageInfo": {
-    "totalResults": 0,
-    "resultsPerPage": 0
-  },
-  "items": []
-}

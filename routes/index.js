@@ -1,84 +1,80 @@
 var express = require('express'),
-    fs = require('fs'),
     router = express.Router(),
-    app = express(),
-    YouTube = require('../public/javascripts/youtube'),
+    YouTube = require('../scripts/youtube'),
     youTubeAPI = new YouTube(),
-    results;
+    keyAPI;
 
-youTubeAPI.setKey('AIzaSyBSq2iIy-IfMWsyVaJmZW2_sy2QwNOdb7I');
 router.get('/', function(req, res, next) {
-    res.render('index', {
-        title: 'Task 16'
-    });
-});
+    var keywords,
+        videoId,
+        playlistId,
+        quantityResults,
+        results;
 
-
-
-//youTubeAPI.getPlayListsItemsById('PLsuEohlthXdkRSxJTkmTstWKHgBHsd3Dx', 3, function(error, result) {
-//youTubeAPI.getPlayListsById('PLsuEohlthXdkRSxJTkmTstWKHgBHsd3Dx', function(error, result) {
-youTubeAPI.getById('ILpS4Fq3lmw', function(error, result) {
-//youTubeAPI.search('node js', 10, function(error, result) {
-    if (error) {
-        console.log(error);
-    }
-    else {
-        //console.log(JSON.stringify(result, null, 2));
-        //console.log(result);
-        results = JSON.stringify(result, null, 2)
-        //results = result;
-    }
-});
-router.get('/youTube', function(req, res, next) {
-    res.render('youTube', {
-        title: 'YouTub_resp',
-        message: results
-    });
-    fs.open('docs/YouTube_resp.txt', "a+", function(err, file_handle) {
-        if (!err) {
-            fs.write(file_handle, results + "\r\n", function(err){
-                if (!err) {
-                    fs.close(file_handle);
-                } else {
-                    console.log("Write error!");
-                }
+    keyAPI = req.query.setKey;
+    youTubeAPI.setKey(keyAPI);
+    keywords = req.query.keywords;
+    videoId = req.query.videoId;
+    playlistId = req.query.playlistId;
+    quantityResults = req.query.maxResults;
+    if (quantityResults == "") quantityResults = 5;
+    if (keyAPI == "") {
+        console.error('You have not entered the Key.');
+        throw new Error('You have not entered the Key.');
+    } else if ((keywords && videoId) || (videoId && playlistId) || (keywords && playlistId)) {
+        console.error('You must fill in only one field of: "Keywords", "Video ID" or "Playlist ID".');
+        throw new Error('You must fill in only one field of: "Keywords", "Video ID" or "Playlist ID".');
+    } else if (keywords) {
+        youTubeAPI.search(keywords, quantityResults, function(error, result) {
+            if (youTubeAPI.statusCode == 400) {
+                results = JSON.stringify(error, null, 2);
+                console.log(results);
+            } else {
+                results = JSON.stringify(result, null, '\t');
+                console.log(results);
+            }
+            res.render('search', {
+                title: 'keywords',
+                message: results
             });
-        } else {
-            console.log("Error opening file!");
-        }
-    });
+        });
+    } else if (videoId) {
+        youTubeAPI.getById(videoId, function(error, result) {
+            if (youTubeAPI.statusCode == 400) {
+                results = JSON.stringify(error, null, 2);
+            } else {
+                results = JSON.stringify(result, null, 2);
+            }
+            res.render('youTube', {
+                title: 'videoId',
+                message: results
+            });
+        });
+    } else if (playlistId) {
+        youTubeAPI.getPlayListById(playlistId, quantityResults, function(error, result) {
+            if (youTubeAPI.statusCode == 400) {
+                results = JSON.stringify(error, null, 2);
+            } else {
+                results = JSON.stringify(result, null, 2);
+            }
+            res.render('youTube', {
+                title: 'playlistId',
+                message: results
+            });
+        });
+    } else if (!req.query[0]) {
+        res.render('index', {
+            title: 'Task 16'
+        });
+    } else {
+        console.error('Server Error');
+        throw new Error('Server Error');
+    }
 });
-//router.get('/search', function(req, res, next) {
-//    res.redirect(url.search);
-//});
-//
-//router.get('/id', function(req, res, next) {
-//    res.redirect(url.getById);
-//});
-//
-//router.get('/playlist', function(req, res, next) {
-//    res.redirect(url.getPlayListsById);
-//});
-//
-//router.get('/playlistitem', function(req, res, next) {
-//    res.redirect(url.getPlayListsItemsById);
-//});
 
 router.use(function(req, res) {
     console.error('Page not found');
     throw new Error('Page not found');
-});
-
-router.use(function(err, req, res, next) {
-    if (app.get('env') == 'development') {
-        res.status(500).render('error', {
-            title: 'Error page',
-            message: err.message,
-            stack: err.stack
-        });
-    } else {
-        res.status(404).send('Page not found');
-    }
 });
 
 module.exports = router;
