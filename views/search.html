@@ -1,9 +1,14 @@
 {% extends 'index.html' %}
 
+{% block header %}
+<h3>{{title}}</h3>
+<h4>API YouTube. Keyword search.</h4>
+{% endblock %}<br>
+
 {% block content %}
-<h1>{{title}}</h1>
 {{ message }}
 <p>For searching by keyword, click the next button:</p>
+<a href="http://localhost:3000"><button type="button" class="btn btn-default">Home page</button></a>
 <br>
 <hr>
 {% endblock %}

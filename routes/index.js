@@ -2,7 +2,8 @@ var express = require('express'),
     router = express.Router(),
     YouTube = require('../scripts/youtube'),
     youTubeAPI = new YouTube(),
-    keyAPI;
+    keyAPI,
+    container;
 
 router.get('/', function(req, res, next) {
     var keywords,
@@ -26,17 +27,54 @@ router.get('/', function(req, res, next) {
         throw new Error('You must fill in only one field of: "Keywords", "Video ID" or "Playlist ID".');
     } else if (keywords) {
         youTubeAPI.search(keywords, quantityResults, function(error, result) {
-            if (youTubeAPI.statusCode == 400) {
+            if (result) {
+                container = {};
+                container.totalResults = result.pageInfo.totalResults;
+                container.resultsPerPage = result.pageInfo.resultsPerPage;
+                container.items = [];
+
+                for (var i in result.items) {
+                    if (result.items[i].id.videoId) {
+                        container.items.push('video');
+                        container.items.push(result.items[i].id.videoId);
+                    } else if (result.items[i].id.playlistId) {
+                        container.items.push('playlist');
+                        container.items.push(result.items[i].id.playlistId);
+                    } else if (result.items[i].id.channelId) {
+                        container.items.push('channel');
+                        container.items.push(result.items[i].id.channelId);
+                    } else {
+                        console.error('Server Error');
+                        throw new Error('Server Error');
+                    }
+                }
+                    //container.items[i].
+                    //container.items[i].
+                    //container.items[i].
+                    //container.items[i].
+                    //container.items[i].
+                    //container.items[i].
+                    //container.items[i].
+                    //container.items[i].
+                    //container.items[i].
+                results = JSON.stringify(result, null, 2);
+                    containerr = JSON.stringify(container, null, 2);
+                console.log(containerr);
+                res.render('search', {
+                    title: 'Search',
+                    message: results
+                });
+            } else if (error) {
                 results = JSON.stringify(error, null, 2);
-                console.log(results);
+                res.render('error-response', {
+                    title: 'Error response',
+                    error: error,
+                    message: results
+                });
             } else {
-                results = JSON.stringify(result, null, '\t');
-                console.log(results);
+                console.error('Server Error');
+                throw new Error('Server Error');
             }
-            res.render('search', {
-                title: 'keywords',
-                message: results
-            });
         });
     } else if (videoId) {
         youTubeAPI.getById(videoId, function(error, result) {

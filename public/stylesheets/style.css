@@ -6,7 +6,7 @@
     background-image: url(http://localhost:3000/images/background.jpg);
     background-repeat: no-repeat;
     background-position: center;
-    margin-top: 50px;
+    margin-top: 30px;
 }
 #jumbotronh1, #jumbotronp{
     color: #ddd;
@@ -22,4 +22,15 @@
 }
 h3, dt{
     text-indent: 70px;
+}
+#js_t16_show_res{
+    cursor: pointer;
+    font-weight: bold;
+}
+#js_t16_original_res{
+    display: none;
+    color: #666;
+    padding: 10px;
+    border: 3px solid #56317d;
+    /*border-color: #666;*/
 }

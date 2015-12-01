@@ -20,6 +20,8 @@
 
     <link rel="stylesheet" href="/stylesheets/style.css"/>
     <link rel="stylesheet" type="text/css" href="http://localhost:3000/libs/font-awesome/css/font-awesome.css">
+    {% block head %}
+    {% endblock %}<br>
 </head>
 <body>
 {% block menu %}
@@ -149,32 +151,6 @@
                 </div>
             </div>
         </form>
-
-
-        <!--<p>For searching by keyword, click the next button:</p>-->
-        <!--<a href="http://localhost:3000/search" target="blank"><button type="button" class="btn btn-info t16_btn">Search</button></a>-->
-        <!--<br>-->
-        <!--<hr>-->
-
-        <!--<p>For searching video by id, click the next button:</p>-->
-        <!--<a href="http://localhost:3000/id" target="blank"><button type="button" class="btn btn-info t16_btn">Id</button></a>-->
-        <!--<br>-->
-        <!--<hr>-->
-
-        <!--<p>To get information about the playlist by id, click the next button:</p>-->
-        <!--<a href="http://localhost:3000/playlist" target="blank"><button type="button" class="btn btn-info t16_btn">Playlist</button></a>-->
-        <!--<br>-->
-        <!--<hr>-->
-
-        <!--<p>To get information about videos in playlist (by id), click the next button:</p>-->
-        <!--<a href="http://localhost:3000/playlistitem" target="blank"><button type="button" class="btn btn-info t16_btn">Playlist Item</button></a>-->
-        <!--<br>-->
-        <!--<hr>-->
-
-
-
-
-
         {% endblock %}<br>
 
         {% block footer %}
