@@ -85,8 +85,20 @@ router.get('/', function(req, res, next) {
     } else if (videoId) {
         youTubeAPI.getById(videoId, function(error, result) {
             if (result) {
-                //container = {};
-                //container.keywords = keywords;
+                container = {};
+                container.videoId = result.items[0].id;
+                container.link = 'https://www.youtube.com/watch?v=' + result.items[0].id;
+                container.publishedAt = result.items[0].snippet.publishedAt;
+                container.channelId = result.items[0].snippet.channelId;
+                container.title = result.items[0].snippet.title;
+                container.description = result.items[0].snippet.description;
+                container.thumbnails = result.items[0].snippet.thumbnails.standard.url;
+                container.channelTitle = result.items[0].snippet.channelTitle;
+                container.privacyStatus = result.items[0].status.privacyStatus;
+                container.viewCount = result.items[0].statistics.viewCount;
+                container.likeCount = result.items[0].statistics.likeCount;
+                container.dislikeCount = result.items[0].statistics.dislikeCount;
+                container.commentCount = result.items[0].statistics.commentCount;
                 //container.totalResults = result.pageInfo.totalResults;
                 //container.resultsPerPage = result.pageInfo.resultsPerPage;
                 //container.items = [];
@@ -122,8 +134,10 @@ router.get('/', function(req, res, next) {
                 //    });
                 //}
                 results = JSON.stringify(result, null, 2);
-                consile.log(results);
-                res.render('search', {
+                containerr = JSON.stringify(container, null, 2);
+                console.log(containerr);
+                //console.log(results);
+                res.render('video-info', {
                     title: 'Keyword search',
                     container: container,
                     message: results

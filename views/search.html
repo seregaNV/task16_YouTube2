@@ -16,7 +16,7 @@
             {{ message }}
         </div>
     </div>
-    <h4>General information about the requested information.</h4>
+    <h4>General information about the results of request.</h4>
     <p><b>Keywords:</b> "{{ container.keywords }}";</p>
     <p><b>Total results:</b> {{ container.totalResults }};</p>
     <p><b>Results per page:</b> {{ container.resultsPerPage }};</p>
@@ -26,15 +26,15 @@
 
     {% for info in container.items %}
         <hr>
-        <p><b>type:</b> "{{ info.type }}";</p>
-        <p><b>id:</b> "{{ info.id }}";</p>
-        <p><b>publishedAt:</b> "{{ info.publishedAt }}";</p>
-        <p><b>channelId:</b> "{{ info.channelId }}";</p>
-        <p><b>title:</b> "{{ info.title }}";</p>
-        <p><b>description:</b> "{{ info.description }}";</p>
-        <p><b>link to the {{ info.type }}:</b> <a href="{{ info.link }}" target="blank">{{ info.link }}</a>;</p>
+        <p><b>Type:</b> "{{ info.type }}";</p>
+        <p><b>ID:</b> "{{ info.id }}";</p>
+        <p><b>Title:</b> "{{ info.title }}";</p>
+        <p><b>Description:</b> "{{ info.description }}";</p>
+        <p><b>Published at:</b> "{{ info.publishedAt }}";</p>
+        <p><b>Link to the {{ info.type }}:</b> <a href="{{ info.link }}" target="blank">{{ info.link }}</a>;</p>
+        <p><b>Channel ID:</b> "{{ info.channelId }}";</p>
 
-        <p><b>thumbnails:</b> <img src="{{ info.thumbnails }}" class="img-thumbnail"></p>
+        <p><b>Thumbnails:</b> <img src="{{ info.thumbnails }}" class="img-thumbnail"></p>
         <br>
         <br>
     {% endfor %}

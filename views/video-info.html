@@ -1,0 +1,37 @@
+{% extends 'index.html' %}
+
+{% block head %}
+    <script src="/javascripts/t16_api_youtube_acc.js"></script>
+{% endblock %}
+
+{% block header %}
+    <h3>{{title}}</h3>
+    <p>Response from API YouTube.</p>
+{% endblock %}<br>
+
+{% block content %}
+    <div>
+        <p class="js_t16_show_res text-center">Show the code of the original response from API YouTube.</p>
+        <div class="js_t16_original_res">
+            {{ message }}
+        </div>
+    </div>
+    <h4>General information about the video.</h4>
+
+    <p><b>Video ID:</b> "{{ container.videoId }}";</p>
+    <p><b>Title:</b> "{{ container.title }}";</p>
+    <p><b>Description:</b> "{{ container.description }}";</p>
+    <p><b>Link:</b> <a href="{{ container.link }}" target="blank">{{ container.link }}</a>;</p>
+    <p><b>Published at:</b> "{{ container.publishedAt }}";</p>
+    <p><b>Channel ID:</b> "{{ container.channelId }}";</p>
+    <p><b>Channel Title:</b> "{{ container.channelTitle }}";</p>
+    <p><b>Privacy status:</b> "{{ container.privacyStatus }}";</p>
+    <p><b>View count:</b> "{{ container.viewCount }}";</p>
+    <p><b>Like count:</b> "{{ container.likeCount }}";</p>
+    <p><b>Dislike count:</b> "{{ container.dislikeCount }}";</p>
+    <p><b>Comment count:</b> "{{ container.commentCount }}";</p>
+    <p><b>Thumbnails:</b> <img src="{{ container.thumbnails }}" class="img-thumbnail"></p>
+
+    <p>To return, click on the button:</p>
+    <a href="http://localhost:3000"><button type="button" class="btn btn-default">Return</button></a>
+{% endblock %}
