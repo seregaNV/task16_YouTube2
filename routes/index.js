@@ -99,46 +99,9 @@ router.get('/', function(req, res, next) {
                 container.likeCount = result.items[0].statistics.likeCount;
                 container.dislikeCount = result.items[0].statistics.dislikeCount;
                 container.commentCount = result.items[0].statistics.commentCount;
-                //container.totalResults = result.pageInfo.totalResults;
-                //container.resultsPerPage = result.pageInfo.resultsPerPage;
-                //container.items = [];
-                //for (var i in result.items) {
-                //    var typeItem,
-                //        idItem,
-                //        linkItem;
-                //    if (result.items[i].id.videoId) {
-                //        typeItem = 'video';
-                //        idItem = result.items[i].id.videoId;
-                //        linkItem = 'https://www.youtube.com/watch?v=' + idItem;
-                //    } else if (result.items[i].id.playlistId) {
-                //        typeItem = 'playlist';
-                //        idItem = result.items[i].id.playlistId;
-                //        linkItem = 'https://www.youtube.com/playlist?list=' + idItem;
-                //    } else if (result.items[i].id.channelId) {
-                //        typeItem = 'channel';
-                //        idItem = result.items[i].id.channelId;
-                //        linkItem = 'https://www.youtube.com/channel/' + idItem;
-                //    } else {
-                //        console.error('Server Error');
-                //        throw new Error('Server Error');
-                //    }
-                //    container.items.push({
-                //        'type': typeItem,
-                //        'id': idItem,
-                //        'publishedAt': result.items[i].snippet.publishedAt,
-                //        'channelId': result.items[i].snippet.channelId,
-                //        'title': result.items[i].snippet.title,
-                //        'description': result.items[i].snippet.description,
-                //        'thumbnails': result.items[i].snippet.thumbnails.high.url,
-                //        'link': linkItem
-                //    });
-                //}
                 results = JSON.stringify(result, null, 2);
-                containerr = JSON.stringify(container, null, 2);
-                console.log(containerr);
-                //console.log(results);
                 res.render('video-info', {
-                    title: 'Keyword search',
+                    title: 'Information about the video',
                     container: container,
                     message: results
                 });
@@ -153,34 +116,47 @@ router.get('/', function(req, res, next) {
                 console.error('Server Error');
                 throw new Error('Server Error');
             }
-
-
-
-
-
-
-
-            //if (youTubeAPI.statusCode == 400) {
-            //    results = JSON.stringify(error, null, 2);
-            //} else {
-            //    results = JSON.stringify(result, null, 2);
-            //}
-            //res.render('youTube', {
-            //    title: 'videoId',
-            //    message: results
-            //});
         });
     } else if (playlistId) {
         youTubeAPI.getPlayListById(playlistId, quantityResults, function(error, result) {
-            if (youTubeAPI.statusCode == 400) {
-                results = JSON.stringify(error, null, 2);
-            } else {
+            if (result) {
+                container = {};
+                container.totalResults = result.pageInfo.totalResults;
+                container.resultsPerPage = result.pageInfo.resultsPerPage;
+                container.playlistId = result.items[0].snippet.playlistId;
+                container.linkPlaylist = 'https://www.youtube.com/playlist?list=' + container.playlistId;
+                container.items = [];
+                for (var i in result.items) {
+                    container.items.push({
+                        'id': result.items[i].contentDetails.videoId,
+                        'linkVideo': 'https://www.youtube.com/watch?v=' + result.items[i].contentDetails.videoId,
+                        'publishedAt': result.items[i].snippet.publishedAt,
+                        'playlistId': result.items[i].snippet.playlistId,
+                        'channelId': result.items[i].snippet.channelId,
+                        'channelTitle': result.items[i].snippet.channelTitle,
+                        'title': result.items[i].snippet.title,
+                        'description': result.items[i].snippet.description,
+                        'thumbnails': result.items[i].snippet.thumbnails.standard.url
+
+                    });
+                }
                 results = JSON.stringify(result, null, 2);
+                res.render('playlist-info', {
+                    title: 'Information about the playlist',
+                    container: container,
+                    message: results
+                });
+            } else if (error) {
+                results = JSON.stringify(error, null, 2);
+                res.render('error-response', {
+                    title: 'Response error',
+                    error: error,
+                    message: results
+                });
+            } else {
+                console.error('Server Error');
+                throw new Error('Server Error');
             }
-            res.render('youTube', {
-                title: 'playlistId',
-                message: results
-            });
         });
     } else if (!req.query[0]) {
         res.render('index', {

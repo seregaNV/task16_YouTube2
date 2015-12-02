@@ -1,43 +1,45 @@
 {% extends 'index.html' %}
 
 {% block head %}
-<script src="/javascripts/t16_api_youtube_acc.js"></script>
+    <script src="/javascripts/t16_api_youtube_acc.js"></script>
 {% endblock %}
 
 {% block header %}
-<h3>{{title}}</h3>
-<p>Response from API YouTube.</p>
+    <h3>{{title}}</h3>
+    <p>Response from API YouTube.</p>
 {% endblock %}<br>
 
 {% block content %}
-<div>
-    <p class="js_t16_show_res text-center">Show the code of the original response from API YouTube.</p>
-    <div class="js_t16_original_res">
-        {{ message }}
+    <div>
+        <p class="js_t16_show_res text-center">Show the code of the original response from API YouTube.</p>
+        <div class="js_t16_original_res">
+            {{ message }}
+        </div>
     </div>
-</div>
-<h4>General information about the requested information.</h4>
-<p><b>Keywords:</b> "{{ container.keywords }}";</p>
-<p><b>Total results:</b> {{ container.totalResults }};</p>
-<p><b>Results per page:</b> {{ container.resultsPerPage }};</p>
-<br>
-<br>
-<h4>Detailed information about the results of request.</h4>
+    <h4>General information about the video.</h4>
+    <p><b>Total results:</b> {{ container.totalResults }};</p>
+    <p><b>Results per page:</b> {{ container.resultsPerPage }};</p>
+    <p><b>Playlist ID:</b> {{ container.playlistId }};</p>
+    <p><b>Link to the playlist:</b> <a href="{{ container.linkPlaylist }}" target="blank">{{ container.linkPlaylist }}</a>;</p>
+    <br>
+    <br>
+    <h4>Detailed information about the results of request.</h4>
 
-{% for info in container.items %}
-<hr>
-<p><b>type:</b> "{{ info.type }}";</p>
-<p><b>id:</b> "{{ info.id }}";</p>
-<p><b>publishedAt:</b> "{{ info.publishedAt }}";</p>
-<p><b>channelId:</b> "{{ info.channelId }}";</p>
-<p><b>title:</b> "{{ info.title }}";</p>
-<p><b>description:</b> "{{ info.description }}";</p>
-<p><b>link to the {{ info.type }}:</b> <a href="{{ info.link }}" target="blank">{{ info.link }}</a>;</p>
+    {% for info in container.items %}
+        <hr>
+        <p><b>ID:</b> "{{ info.id }}";</p>
+        <p><b>Title:</b> "{{ info.title }}";</p>
+        <p><b>Description:</b> "{{ info.description }}";</p>
+        <p><b>Published at:</b> "{{ info.publishedAt }}";</p>
+        <p><b>Link to the video:</b> <a href="{{ info.linkVideo }}" target="blank">{{ info.linkVideo }}</a>;</p>
+        <p><b>Playlist ID:</b> "{{ info.playlistId }}";</p>
+        <p><b>Channel ID:</b> "{{ info.channelId }}";</p>
+        <p><b>Channel title:</b> "{{ info.channelTitle }}";</p>
+        <p><b>Thumbnails:</b> <img src="{{ info.thumbnails }}" class="img-thumbnail"></p>
+        <br>
+        <br>
+    {% endfor %}
 
-<p><b>thumbnails:</b> <img src="{{ info.thumbnails }}" class="img-thumbnail"></p>
-<br>
-<br>
-{% endfor %}
-<p>To return, click on the button:</p>
-<a href="http://localhost:3000"><button type="button" class="btn btn-default">Return</button></a>
+    <p>To return, click on the button:</p>
+    <a href="http://localhost:3000"><button type="button" class="btn btn-default">Return</button></a>
 {% endblock %}
